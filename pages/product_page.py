@@ -6,6 +6,15 @@ from .locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE_ABOUT_ADDING), (
+            "Success message is presented, but should not be")
+
+    def should_disappear_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE_ABOUT_ADDING), (
+            "The error message hasn't gone away, but it should"
+        )
+
     def press_button_add_to_basket(self) -> typing.NoReturn:
         button_add_to_basket = self.browser.find_element(*ProductPageLocators.BUTTON_ADD_TO_BASKET)
         button_add_to_basket.click()
