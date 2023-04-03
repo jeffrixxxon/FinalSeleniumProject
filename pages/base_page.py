@@ -1,10 +1,10 @@
-import typing
-from .locators import BasePageLocators, BasketPageLocators
+from typing import NoReturn
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from .locators import BasePageLocators, BasketPageLocators
 
 
 class BasePage:
@@ -13,7 +13,14 @@ class BasePage:
         self.url: str = url
         self.browser.implicitly_wait(timeout)
 
-    def go_to_basket_page(self) -> typing.NoReturn:
+    def open(self) -> NoReturn:
+        self.browser.get(self.url)
+
+    def should_be_authorized_user(self) -> NoReturn:
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
+    def go_to_basket_page(self) -> NoReturn:
         try:
             link = self.browser.find_element(*BasketPageLocators.BASKET_POSITION)
             link.click()
@@ -22,7 +29,7 @@ class BasePage:
         else:
             assert 'basket' in self.browser.current_url, 'You are not on the basket page'
 
-    def go_to_login_page(self) -> typing.NoReturn:
+    def go_to_login_page(self) -> NoReturn:
         try:
             link = self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
             link.click()
@@ -31,11 +38,8 @@ class BasePage:
         else:
             assert 'login' in self.browser.current_url, 'You are not on the login page'
 
-    def should_be_login_link(self) -> typing.NoReturn:
+    def should_be_login_link(self) -> NoReturn:
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
-
-    def open(self) -> typing.NoReturn:
-        self.browser.get(self.url)
 
     def is_element_present(self, how: By, what: str) -> bool:
         try:
