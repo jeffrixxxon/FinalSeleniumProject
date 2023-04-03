@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 class BasePageLocators:
     LOGIN_LINK: tuple = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID: tuple = (By.CSS_SELECTOR, "#login_link")
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
+
 
 
 class BasketPageLocators:
@@ -18,6 +20,10 @@ class MainPageLocators:
 class LoginPageLocators:
     LOGIN_FORM: tuple = (By.CSS_SELECTOR, '[id="login_form"]')
     REG_FORM: tuple = (By.CSS_SELECTOR, '[id="register_form"]')
+    EMAIL_FORM: tuple = (By.CSS_SELECTOR, "[name='registration-email']")
+    PASSWORD_FORM: tuple = (By.CSS_SELECTOR, "[name='registration-password1']")
+    PASSWORD_CONFIRM_FORM: tuple = (By.CSS_SELECTOR, "[name='registration-password2']")
+    BUTTON_REGISTER: tuple = (By.CSS_SELECTOR, "[name='registration_submit']")
 
 
 class ProductPageLocators:
