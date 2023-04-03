@@ -1,6 +1,7 @@
 import typing
 import pytest
 from pages.product_page import ProductPage
+from pages.basket_page import BasketPage
 
 link_1: str = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{}"
 urls = [pytest.param('bugged_link', marks=pytest.mark.xfail)
@@ -8,13 +9,14 @@ urls = [pytest.param('bugged_link', marks=pytest.mark.xfail)
 
 
 @pytest.mark.parametrize('url', urls)
-def test_guest_can_add_product_to_cart(browser, url) -> typing.NoReturn:
+def test_guest_can_add_product_to_cart(browser, url):
     page = ProductPage(browser, url)
     page.open()
     page.press_button_add_to_basket()
     page.solve_quiz_and_get_code()
     page.should_be_message_about_adding()
     page.should_be_message_basket_total()
+
 
 @pytest.mark.xfail
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
@@ -56,3 +58,20 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page.open()
     page.should_be_login_link()
     page.go_to_login_page()
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/the-city-and-the-stars_95/"
+    page = BasketPage(browser, link)
+    page.open()
+    page.go_to_basket_page()
+    page.should_basket_is_empty()
+
+
+@pytest.mark.xfail
+def test_guest_cant_not_see_product_in_basket_opened_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/the-city-and-the-stars_95/"
+    page = BasketPage(browser, link)
+    page.open()
+    page.go_to_basket_page()
+    page.should_basket_is_not_empty()
+
