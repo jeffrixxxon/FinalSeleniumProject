@@ -8,6 +8,16 @@ class LoginPage(BasePage):
         self.should_be_login_form()
         self.should_be_register_form()
 
+    def register_new_user(self, email: str, password: str):
+        link = self.browser.current_url
+        self.go_to_login_page()
+        self.browser.find_element(*LoginPageLocators.EMAIL_FORM).send_keys(email)
+        self.browser.find_element(*LoginPageLocators.PASSWORD_FORM).send_keys(password)
+        self.browser.find_element(*LoginPageLocators.PASSWORD_CONFIRM_FORM).send_keys(password)
+        self.browser.find_element(*LoginPageLocators.BUTTON_REGISTER).click()
+        self.should_be_authorized_user()
+        self.browser.get(link)
+
     def should_be_login_url(self):
         assert 'login' in self.browser.current_url, 'You are not on the registration page'
 
